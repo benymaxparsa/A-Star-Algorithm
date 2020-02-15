@@ -8,7 +8,7 @@ public class Node : MonoBehaviour
     public float HCost;  // distance from end Node
     public float FCost;  // H + G cost
 
-    public Vector2Int pos;
+    public Vector2 pos;
 
     public Node parent;   //ref
 
@@ -16,12 +16,12 @@ public class Node : MonoBehaviour
 
     public void Calc_GCost()
     {
-        GCost = parent.GCost + Vector2Int.Distance(pos, parent.pos) ; 
+        GCost = parent.GCost + Vector2.Distance(pos, parent.pos) ; 
     }
 
-    public void Calc_HCost(Vector2Int final)                        //........................change to grid end...........................//
+    public void Calc_HCost(Vector2  final)                        //........................change to grid end...........................//
     {
-        GCost =  Vector2Int.Distance(pos, final);
+        GCost =  Vector2.Distance(pos, final);
     }
 
     public void Calc_FCost()

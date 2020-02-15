@@ -1,12 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MainGrid : MonoBehaviour
 {
     public int size;
-    public Node start;
+    public Node begin;
     public Node end;
+    public float scale = 1;
+
+    public Transform player;
 
     private bool[,] walls;
 
@@ -19,11 +23,35 @@ public class MainGrid : MonoBehaviour
     {
         matrix = new Node[size, size];
         walls = new bool[size, size];
-        walls[size/2, size/2] = true;
     }
 
-    public void Created() 
+    private void GenerateGrid()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                matrix[i,j] = InitializeNode(i, j);
+            }
+        }
+    }
+
+    private void PlayerPos()
     {
 
     }
+
+    private void EnemyPos()
+    {
+
+    }
+
+    private Node InitializeNode(int x, int y)
+    {
+        Node temp = new Node();
+        temp.pos.x = x / scale;
+        temp.pos.y = y / scale;
+        return temp;
+    }
+
 }
