@@ -84,7 +84,7 @@ public class MainGrid : MonoBehaviour
         {
             for (int j = 0; j < size; j++)
             {
-                Gizmos.DrawWireCube(new Vector3(i*(- Xoffset *10)+size/2, 0,j*(  -Yoffset *10) + size / 2) , new Vector3(size, 0.1f, size));
+                Gizmos.DrawWireCube(new Vector3((i - Xoffset)*10 + 5,0, (j - Yoffset)*10 +5) , new Vector3(10, 0.1f, 10));
             }
         }
     }
