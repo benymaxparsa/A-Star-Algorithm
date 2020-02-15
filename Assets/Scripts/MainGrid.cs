@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grid : MonoBehaviour
+public class MainGrid : MonoBehaviour
 {
     public int size;
     public Node start;
