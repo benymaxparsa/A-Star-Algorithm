@@ -8,6 +8,8 @@ public class Node : MonoBehaviour
     public float HCost;  // distance from end Node
     public float FCost;  // H + G cost
 
+    public bool visited = false, option = false;
+
     public Vector2 pos;
 
     public Node parent;   //ref
