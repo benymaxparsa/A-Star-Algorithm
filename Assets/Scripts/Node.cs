@@ -23,7 +23,7 @@ public class Node : MonoBehaviour
 
     public void Calc_HCost(Vector2  final)                        //........................change to grid end...........................//
     {
-        GCost =  Vector2.Distance(pos, final);
+        HCost =  Vector2.Distance(pos, final);
     }
 
     public void Calc_FCost()

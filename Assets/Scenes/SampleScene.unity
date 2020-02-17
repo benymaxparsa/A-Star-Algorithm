@@ -369,6 +369,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 10
   scale: 10
+  cube: {fileID: 1979627169991857332, guid: 882d791ae567478428f7ce187ce17e44, type: 3}
+  wall: {fileID: 1979627169991857332, guid: 93d3698585a024747aa21a87da0d2aa5, type: 3}
   plane: {fileID: 5805903753854879296, guid: 4f0b6f1c9205ed04d95c716872c0311a, type: 3}
   player: {fileID: 770046542}
 --- !u!4 &801352195
