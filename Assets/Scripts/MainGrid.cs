@@ -28,6 +28,16 @@ public class MainGrid : MonoBehaviour
 
     Node[,] Grid;
 
+    public Vector2Int WorldPos_To_GridIndex(Transform pos)
+    {
+        return new Vector2Int((int)((pos.position.x + Xoffset * 10) / 10), ((int)(pos.position.z + Yoffset * 10) / 10));
+    }
+
+    public Vector3 GridIndex_To_WorldPos(int x, int y)
+    {
+        return new Vector3((x - Xoffset) * 10 + 5, 0, (y - Yoffset) * 10 + 5);
+    }
+
     private void Start()
     {
         Grid = new Node[size, size];
@@ -52,7 +62,7 @@ public class MainGrid : MonoBehaviour
         CalcNeighbour(Enemy);
         options= options.OrderBy(x => x.FCost).ToList();
         Grid[4, 4].isWall = true;
-        Instantiate(wall, new Vector3((4 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+        Instantiate(wall, GridIndex_To_WorldPos(4, 4), Quaternion.identity);
 
 
         Grid[4, 5].isWall = true;
@@ -88,13 +98,13 @@ public class MainGrid : MonoBehaviour
             current = options[0];
 
 
-            Instantiate(cube, new Vector3((current.pos.x - Xoffset) * 10 + 5, 0, (current.pos.y - Yoffset) * 10 + 5), Quaternion.identity);
 
 
             current.visited = true;
             options.Remove(options[0]);
             visited.Add(current);
             Grid[(int)current.pos.x, (int)current.pos.y] = current;
+            Instantiate(cube, new Vector3((current.pos.x - Xoffset) * 10 + 5, 0, (current.pos.y - Yoffset) * 10 + 5), Quaternion.identity);
             if (current.pos == Target.pos)
             {
                 Instantiate(cube, new Vector3((current.pos.x - Xoffset) * 10 + 5, 0, (current.pos.y - Yoffset) * 10 + 5), Quaternion.identity);
@@ -102,7 +112,12 @@ public class MainGrid : MonoBehaviour
                 return;
             }
             CalcNeighbour(current);
+            options = options.OrderBy(x => x.HCost).ToList();
             options = options.OrderBy(x => x.FCost).ToList();
+            for (int i = 0; i < options.Count; i++)
+            {
+                Debug.Log(options[i].pos.ToString() + " F = " + options[i].FCost.ToString()+ " H = "+ options[i].HCost.ToString()) ;
+            }
         }
     }
 
@@ -145,6 +160,7 @@ public class MainGrid : MonoBehaviour
                         Node tmp = neig;
                         tmp.parent = curr;
                         tmp.Calc_GCost();
+                        tmp.Calc_FCost();
                         if (tmp.GCost < neig.GCost )
                         {
                             neig = tmp;
