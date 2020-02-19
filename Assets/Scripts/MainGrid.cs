@@ -5,6 +5,12 @@ using UnityEngine;
 using System.Linq;
 public class MainGrid : MonoBehaviour
 {
+    /// <summary>
+    /// distance to move
+    /// </summary>
+    /// 
+    [Range(0, 2)]
+    public float distance; 
     public int size;
     public float scale = 1;
     private float Xoffset;
@@ -12,6 +18,9 @@ public class MainGrid : MonoBehaviour
 
     private Node Enemy;
     private Node Target;
+    private Node current;
+
+    Stack<Node> Path;
 
     List<Node> visited = new List<Node>();
     List<Node> options = new List<Node>();
@@ -23,8 +32,10 @@ public class MainGrid : MonoBehaviour
 
     public GameObject plane;
     public Transform player;
+    public Transform enemy;
 
     private bool[,] walls;
+    private bool Found = false;
 
     Node[,] Grid;
 
@@ -35,7 +46,28 @@ public class MainGrid : MonoBehaviour
 
     public Vector3 GridIndex_To_WorldPos(int x, int y)
     {
-        return new Vector3((x - Xoffset) * 10 + 5, 0, (y - Yoffset) * 10 + 5);
+        return new Vector3((x - Xoffset) * 10 +5, 0, (y - Yoffset) * 10 + 5);
+    }
+
+    public Node getMinCost()
+    {
+        if (options==null)
+            return null;
+        Node temp = options[0];
+
+        foreach (var item in options)
+        {
+            if (temp.FCost > item.FCost)
+            {
+                temp = item;
+            }
+           else if (temp.FCost == item.FCost && temp.HCost > item.HCost)
+            {
+                temp = item;
+            }
+        }
+       // options.Remove(options[0]);
+        return temp;
     }
 
     private void Start()
@@ -44,23 +76,25 @@ public class MainGrid : MonoBehaviour
         walls = new bool[size, size];
         GenerateGrid();
 
+        Path = new Stack<Node>();
+
         Target = Grid[0, 0];
         Target.pos = new Vector2(0, 0);
         Target.HCost = 0;
         Grid[0, 0] = Target;
 
-        Enemy = Grid[9, 9];
-        Enemy.pos = new Vector2(9, 9);
+        Enemy = Grid[19, 19];
+        Enemy.pos = new Vector2(19, 19);
         Enemy.parent = null;
         Enemy.visited = true;
         Enemy.GCost = 0;
         Enemy.Calc_HCost(Target.pos);
         Enemy.Calc_FCost();
-        Grid[9, 9] = Enemy;
+        Grid[19, 19] = Enemy;
         visited.Add(Enemy);
 
         CalcNeighbour(Enemy);
-        options= options.OrderBy(x => x.FCost).ToList();
+       // options= options.OrderBy(x => x.FCost).ToList();
         Grid[4, 4].isWall = true;
         Instantiate(wall, GridIndex_To_WorldPos(4, 4), Quaternion.identity);
 
@@ -82,41 +116,98 @@ public class MainGrid : MonoBehaviour
 
         Grid[6, 4].isWall = true;
         Instantiate(wall, new Vector3((6 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
-
-
+        Grid[9, 4].isWall = true;
+        Instantiate(wall, new Vector3((9 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+                                                                  
+        Grid[10,4].isWall = true;                                 
+        Instantiate(wall, new Vector3((10 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+        Grid[11,4].isWall = true;                                 
+        Instantiate(wall, new Vector3((11 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+        Grid[12,4].isWall = true;                                 
+        Instantiate(wall, new Vector3((12 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+        Grid[13,4].isWall = true;                                 
+        Instantiate(wall, new Vector3((13 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+        Grid[14,4].isWall = true;                                 
+        Instantiate(wall, new Vector3((14 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+        Grid[15,4].isWall = true;                                 
+        Instantiate(wall, new Vector3((15 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+        Grid[16,4].isWall = true;                                 
+        Instantiate(wall, new Vector3((16 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+        Grid[17,4].isWall = true;                                 
+        Instantiate(wall, new Vector3((17 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+        Grid[18,4].isWall = true;                                 
+        Instantiate(wall, new Vector3((18 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
+        Grid[19,4].isWall = true;                                 
+        Instantiate(wall, new Vector3((19 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
         Instantiate(cube, new Vector3((9 - Xoffset) * 10 + 5, 0, (9- Yoffset) * 10 + 5), Quaternion.identity);
+        Grid[7, 4].isWall = true;
+        Instantiate(wall, new Vector3((7 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
 
+        Grid[8, 4].isWall = true;
+        Instantiate(wall, new Vector3((8 - Xoffset) * 10 + 5, 0, (4 - Yoffset) * 10 + 5), Quaternion.identity);
 
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+       if (!Found)
         {
 
-            Node current;
-            current = options[0];
-
-
-
+            current = getMinCost();
+            
 
             current.visited = true;
-            options.Remove(options[0]);
+
+           int index =  options.FindIndex(x => x.visited);
+        options.RemoveAt(index);
             visited.Add(current);
             Grid[(int)current.pos.x, (int)current.pos.y] = current;
             Instantiate(cube, new Vector3((current.pos.x - Xoffset) * 10 + 5, 0, (current.pos.y - Yoffset) * 10 + 5), Quaternion.identity);
             if (current.pos == Target.pos)
             {
                 Instantiate(cube, new Vector3((current.pos.x - Xoffset) * 10 + 5, 0, (current.pos.y - Yoffset) * 10 + 5), Quaternion.identity);
+                Found = true;
+
+                Node pointer = current;
+                while (pointer.pos != Enemy.pos)
+                {
+                    Path.Push(pointer);
+                    pointer = pointer.parent;
+                }
+                Path.Push(Enemy);
+
+
+                //while (Path.Count>0)
+                //{
+                //    Debug.Log(GridIndex_To_WorldPos((int)Path.Peek().pos.x, (int)Path.Peek().pos.y));
+                //    Path.Pop();
+                //}
+
+
                 Debug.Log("FOUND");
-                return;
             }
             CalcNeighbour(current);
-            options = options.OrderBy(x => x.HCost).ToList();
-            options = options.OrderBy(x => x.FCost).ToList();
+            // options = options.OrderBy(x => x.HCost).ToList();
+            // options = options.OrderBy(x => x.FCost).ToList();
+            
             for (int i = 0; i < options.Count; i++)
             {
-                Debug.Log(options[i].pos.ToString() + " F = " + options[i].FCost.ToString()+ " H = "+ options[i].HCost.ToString()) ;
+                //Debug.Log(options[i].pos.ToString() + " F = " + options[i].FCost.ToString()+ " H = "+ options[i].HCost.ToString()) ;
+            }
+        }
+        else
+        {
+            //distance enemy pos,path.peek.pos 
+           Debug.Log(Vector2.Distance((Vector2)WorldPos_To_GridIndex(enemy), Path.Peek().pos));
+            if (Path.Count>0 && Vector2.Distance((Vector2)WorldPos_To_GridIndex(enemy),Path.Peek().pos) > distance)
+            {
+                float t=0.97f;
+               // Debug.Log(GridIndex_To_WorldPos((int)Path.Peek().pos.x, (int)Path.Peek().pos.y));
+                enemy.position =enemy.position*t +  (1-t)*GridIndex_To_WorldPos((int)Path.Peek().pos.x,(int) Path.Peek().pos.y);
+            }
+            else if(Path.Count > 0 && Vector2.Distance((Vector2)WorldPos_To_GridIndex(enemy), Path.Peek().pos) < distance)
+            {
+                Path.Pop();
             }
         }
     }
@@ -151,9 +242,9 @@ public class MainGrid : MonoBehaviour
                 {
                     if (!neig.option)
                     {
-                        options.Add(neig);
                         neig.option = true;
                         neig.parent = curr;
+                        options.Add(neig);
                     }
                     else if (neig.option)
                     {
@@ -200,7 +291,7 @@ public class MainGrid : MonoBehaviour
 
        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log( ((int)((player.position.x + Xoffset*10 )/ 10) ).ToString() + " " + ((int)(player.position.z + Yoffset*10) / 10).ToString());
+            //Debug.Log( ((int)((player.position.x + Xoffset*10 )/ 10) ).ToString() + " " + ((int)(player.position.z + Yoffset*10) / 10).ToString());
         }
 
         return new Vector2((int)((player.position.x + Xoffset * 10) / 10)  ,((int)(player.position.z + Yoffset * 10) / 10));
