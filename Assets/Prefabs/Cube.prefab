@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3052866598417752628}
   - component: {fileID: 7764478634960614271}
   - component: {fileID: 8311404453874601933}
+  - component: {fileID: 2276739650272682772}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1979627169991857332}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 1, z: 8}
+  m_LocalScale: {x: 9, y: 9, z: 9}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -56,10 +57,11 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 30b831dd879fb7b4ca82e5a218eb61e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -80,6 +82,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &8311404453874601933
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89,7 +92,26 @@ BoxCollider:
   m_GameObject: {fileID: 1979627169991857332}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2276739650272682772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1979627169991857332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a43c4929951dcb4e90a3fcf2799792f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  i: 0
+  j: 0
+  wall: {fileID: 2100000, guid: 30b831dd879fb7b4ca82e5a218eb61e0, type: 2}
+  visited: {fileID: 2100000, guid: cb431526d3ad1a84687d87c23ab7af60, type: 2}
+  start: {fileID: 2100000, guid: 8f82e1ed45292854f9010641053275d0, type: 2}
+  end: {fileID: 2100000, guid: 9829632ef276ad24a96f253ae04ae899, type: 2}
+  none: {fileID: 2100000, guid: 2d576c76a91c1bc4abdadcd5a4c4668d, type: 2}

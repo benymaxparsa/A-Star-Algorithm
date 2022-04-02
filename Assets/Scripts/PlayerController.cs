@@ -1,27 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed;
-    private Rigidbody _rb;
+    [SerializeField] private float speed = 2;
+    [SerializeField] private float zoomSpeed = 10;   
     private float _horz;
     private float _vert;
+    private float _zoom;
+    private Camera _camera;
+
     private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
-
+        _camera = GetComponent<Camera>();
     }
+
     private void Update()
     {
-        if (!_rb)
-            return;
         _horz = Input.GetAxis("Horizontal") * speed;
         _vert = Input.GetAxis("Vertical") * speed;
-    }
-    private void FixedUpdate()
-    {
-        _rb.velocity = new Vector3(_horz * Time.fixedDeltaTime, _rb.velocity.y, _vert * Time.fixedDeltaTime);
+        _zoom = Input.GetAxis("Mouse ScrollWheel")*zoomSpeed;
+        _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize+_zoom,10,200);
+        transform.Translate(_horz,_vert,0);
     }
 }
