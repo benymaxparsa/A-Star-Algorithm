@@ -54,11 +54,11 @@ public class MainGrid : MonoBehaviour
 
         foreach (var item in _options)
         {
-            if (temp.fCost > item.fCost)
+            if (temp.FCost > item.FCost)
             {
                 temp = item;
             }
-            else if (temp.fCost == item.fCost && temp.hCost > item.hCost)
+            else if (temp.FCost == item.FCost && temp.HCost > item.HCost)
             {
                 temp = item;
             }
@@ -77,71 +77,71 @@ public class MainGrid : MonoBehaviour
         _path = new Stack<Node>();
 
         _target = _grid[0, 0];
-        _target.pos = new Vector2(0, 0);
-        _target.hCost = 0;
+        _target.Pos = new Vector2(0, 0);
+        _target.HCost = 0;
         _grid[0, 0] = _target;
 
         _enemy = _grid[19, 19];
-        _enemy.pos = new Vector2(19, 19);
-        _enemy.parent = null;
-        _enemy.visited = true;
-        _enemy.gCost = 0;
-        _enemy.Calc_HCost(_target.pos);
+        _enemy.Pos = new Vector2(19, 19);
+        _enemy.Parent = null;
+        _enemy.Visited = true;
+        _enemy.GCost = 0;
+        _enemy.Calc_HCost(_target.Pos);
         _enemy.Calc_FCost();
         _grid[19, 19] = _enemy;
         _visited.Add(_enemy);
 
         CalcNeighbour(_enemy);
        // options= options.OrderBy(x => x.FCost).ToList();
-        _grid[4, 4].isWall = true;
+        _grid[4, 4].IsWall = true;
         Instantiate(wall, GridIndex_To_WorldPos(4, 4), Quaternion.identity);
 
 
-        _grid[4, 5].isWall = true;
+        _grid[4, 5].IsWall = true;
         Instantiate(wall, new Vector3((4 - _xOffset) * 10 + 5, 0, (5 - _yOffset) * 10 + 5), Quaternion.identity);
 
-        _grid[4, 6].isWall = true;
+        _grid[4, 6].IsWall = true;
         Instantiate(wall, new Vector3((4 - _xOffset) * 10 + 5, 0, (6 - _yOffset) * 10 + 5), Quaternion.identity);
 
-        _grid[4, 7].isWall = true;
+        _grid[4, 7].IsWall = true;
         Instantiate(wall, new Vector3((4 - _xOffset) * 10 + 5, 0, (7 - _yOffset) * 10 + 5), Quaternion.identity);
 
-        _grid[4, 8].isWall = true;
+        _grid[4, 8].IsWall = true;
         Instantiate(wall, new Vector3((4 - _xOffset) * 10 + 5, 0, (8 - _yOffset) * 10 + 5), Quaternion.identity);
 
-        _grid[5, 4].isWall = true;
+        _grid[5, 4].IsWall = true;
         Instantiate(wall, new Vector3((5 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
 
-        _grid[6, 4].isWall = true;
+        _grid[6, 4].IsWall = true;
         Instantiate(wall, new Vector3((6 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[9, 4].isWall = true;
+        _grid[9, 4].IsWall = true;
         Instantiate(wall, new Vector3((9 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
                                                                   
-        _grid[10,4].isWall = true;                                 
+        _grid[10,4].IsWall = true;                                 
         Instantiate(wall, new Vector3((10 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[11,4].isWall = true;                                 
+        _grid[11,4].IsWall = true;                                 
         Instantiate(wall, new Vector3((11 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[12,4].isWall = true;                                 
+        _grid[12,4].IsWall = true;                                 
         Instantiate(wall, new Vector3((12 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[13,4].isWall = true;                                 
+        _grid[13,4].IsWall = true;                                 
         Instantiate(wall, new Vector3((13 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[14,4].isWall = true;                                 
+        _grid[14,4].IsWall = true;                                 
         Instantiate(wall, new Vector3((14 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[15,4].isWall = true;                                 
+        _grid[15,4].IsWall = true;                                 
         Instantiate(wall, new Vector3((15 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[16,4].isWall = true;                                 
+        _grid[16,4].IsWall = true;                                 
         Instantiate(wall, new Vector3((16 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[17,4].isWall = true;                                 
+        _grid[17,4].IsWall = true;                                 
         Instantiate(wall, new Vector3((17 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[18,4].isWall = true;                                 
+        _grid[18,4].IsWall = true;                                 
         Instantiate(wall, new Vector3((18 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[19,4].isWall = true;                                 
+        _grid[19,4].IsWall = true;                                 
         Instantiate(wall, new Vector3((19 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
         Instantiate(cube, new Vector3((9 - _xOffset) * 10 + 5, 0, (9- _yOffset) * 10 + 5), Quaternion.identity);
-        _grid[7, 4].isWall = true;
+        _grid[7, 4].IsWall = true;
         Instantiate(wall, new Vector3((7 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
 
-        _grid[8, 4].isWall = true;
+        _grid[8, 4].IsWall = true;
         Instantiate(wall, new Vector3((8 - _xOffset) * 10 + 5, 0, (4 - _yOffset) * 10 + 5), Quaternion.identity);
         _isReady = true;
     }
@@ -153,27 +153,27 @@ public class MainGrid : MonoBehaviour
             _current = GetMinCost();
 
 
-            _current.visited = true;
+            _current.Visited = true;
 
-            int index = _options.FindIndex(x => x.visited);
+            int index = _options.FindIndex(x => x.Visited);
             _options.RemoveAt(index);
             _visited.Add(_current);
-            _grid[(int) _current.pos.x, (int) _current.pos.y] = _current;
+            _grid[(int) _current.Pos.x, (int) _current.Pos.y] = _current;
             Instantiate(cube,
-                new Vector3((_current.pos.x - _xOffset) * 10 + 5, 0, (_current.pos.y - _yOffset) * 10 + 5),
+                new Vector3((_current.Pos.x - _xOffset) * 10 + 5, 0, (_current.Pos.y - _yOffset) * 10 + 5),
                 Quaternion.identity);
-            if (_current.pos == _target.pos)
+            if (_current.Pos == _target.Pos)
             {
                 Instantiate(cube,
-                    new Vector3((_current.pos.x - _xOffset) * 10 + 5, 0, (_current.pos.y - _yOffset) * 10 + 5),
+                    new Vector3((_current.Pos.x - _xOffset) * 10 + 5, 0, (_current.Pos.y - _yOffset) * 10 + 5),
                     Quaternion.identity);
                 _found = true;
 
                 Node pointer = _current;
-                while (pointer.pos != _enemy.pos)
+                while (pointer.Pos != _enemy.Pos)
                 {
                     _path.Push(pointer);
-                    pointer = pointer.parent;
+                    pointer = pointer.Parent;
                 }
 
                 _path.Push(_enemy);
@@ -201,15 +201,15 @@ public class MainGrid : MonoBehaviour
         else
         {
             if (_path.Count > 0 &&
-                Vector2.Distance((Vector2) WorldPos_To_GridIndex(enemy), _path.Peek().pos) > distance)
+                Vector2.Distance((Vector2) WorldPos_To_GridIndex(enemy), _path.Peek().Pos) > distance)
             {
                 float t = 0.97f;
                 // Debug.Log(GridIndex_To_WorldPos((int)Path.Peek().pos.x, (int)Path.Peek().pos.y));
                 enemy.position = enemy.position * t +
-                                 (1 - t) * GridIndex_To_WorldPos((int) _path.Peek().pos.x, (int) _path.Peek().pos.y);
+                                 (1 - t) * GridIndex_To_WorldPos((int) _path.Peek().Pos.x, (int) _path.Peek().Pos.y);
             }
             else if (_path.Count > 0 &&
-                     Vector2.Distance((Vector2) WorldPos_To_GridIndex(enemy), _path.Peek().pos) < distance)
+                     Vector2.Distance((Vector2) WorldPos_To_GridIndex(enemy), _path.Peek().Pos) < distance)
             {
                 _path.Pop();
             }
@@ -230,8 +230,8 @@ public class MainGrid : MonoBehaviour
                                   -1,0       ,        1,0   ,
                                  -1,-1  ,   0,-1  ,   1,-1   };
         int Px, Py,x,y;
-        Px = (int)curr.pos.x;
-        Py = (int)curr.pos.y;
+        Px = (int)curr.Pos.x;
+        Py = (int)curr.Pos.y;
 
         for (int i = 0; i < 16; i+=2)
         {
@@ -242,27 +242,27 @@ public class MainGrid : MonoBehaviour
             if (x>=0 && x<size && y >= 0 && y < size)
             {
                 Node neig = _grid[x, y];
-                if (!neig.isWall && !neig.visited)
+                if (!neig.IsWall && !neig.Visited)
                 {
-                    if (!neig.option)
+                    if (!neig.Option)
                     {
-                        neig.option = true;
-                        neig.parent = curr;
+                        neig.Option = true;
+                        neig.Parent = curr;
                         _options.Add(neig);
                     }
-                    else if (neig.option)
+                    else if (neig.Option)
                     {
                         Node tmp = neig;
-                        tmp.parent = curr;
+                        tmp.Parent = curr;
                         tmp.Calc_GCost();
                         tmp.Calc_FCost();
-                        if (tmp.gCost < neig.gCost )
+                        if (tmp.GCost < neig.GCost )
                         {
                             neig = tmp;
                         } 
                     }
                     neig.Calc_GCost();
-                    neig.Calc_HCost(_target.pos);
+                    neig.Calc_HCost(_target.Pos);
                     neig.Calc_FCost();
 
                     _grid[x, y] = neig;
@@ -309,8 +309,8 @@ public class MainGrid : MonoBehaviour
     private Node InitializeNode(int x, int y)
     {
         Node temp = new Node();
-        temp.pos.x = x ;
-        temp.pos.y = y ;
+        temp.Pos.x = x ;
+        temp.Pos.y = y ;
         return temp;
     }
 
@@ -318,7 +318,7 @@ public class MainGrid : MonoBehaviour
     {
         if(!_isReady) return;
         Gizmos.color = Color.cyan;
-        Gizmos.DrawCube(new Vector3((_target.pos.x - _xOffset) * 10 + 5, 0, (_target.pos.y - _yOffset) * 10 + 5), new Vector3(10, 10, 10));
+        Gizmos.DrawCube(new Vector3((_target.Pos.x - _xOffset) * 10 + 5, 0, (_target.Pos.y - _yOffset) * 10 + 5), new Vector3(10, 10, 10));
         for (int i = 0; i < size; i++)
         {
             for (int j = 0; j < size; j++)

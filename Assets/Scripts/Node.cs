@@ -3,31 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Node : MonoBehaviour
+public class Node
 {
-    public float gCost;  // distance from start Node
-    public float hCost;  // distance from end Node
-    public float fCost;  // H + G cost
+    public float GCost;  // distance from start Node
+    public float HCost;  // distance from end Node
+    public float FCost;  // H + G cost
 
-    public bool visited = false, option = false;
+    public bool Visited = false, Option = false;
 
-    public Vector2 pos;
+    public Vector2 Pos;
 
-    public Node parent;   //ref
+    public Node Parent;   //ref
 
-    public bool isWall = false;
+    public bool IsWall = false;
 
     public void Calc_GCost()
     {
-        gCost = parent.gCost + Vector2.Distance(pos, parent.pos);
+        GCost = Parent.GCost + Vector2.Distance(Pos, Parent.Pos);
        // float dx = Mathf.Abs(pos.x - parent.pos.x);
        // float dy = Mathf.Abs(pos.y - parent.pos.y);
        // GCost = parent.GCost + (dx + dy) + (1 - 2) * Mathf.Min(dx, dy);
     }
 
-    public void Calc_HCost(Vector2  final)                        //........................change to grid end...........................//
+    public void Calc_HCost(Vector2  final) //........................change to grid end...........................//
     {
-        hCost = Vector2.Distance(pos, final);
+        HCost = Vector2.Distance(Pos, final);
         //float dx = Mathf.Abs(pos.x - final.x);
         //float dy = Mathf.Abs(pos.y - final.y);
        // HCost = (dx + dy) + (1 - 2) * Mathf.Min(dx, dy);
@@ -36,6 +36,6 @@ public class Node : MonoBehaviour
 
     public void Calc_FCost()
     {
-        fCost = gCost + hCost;
+        FCost = GCost + HCost;
     }
 }
