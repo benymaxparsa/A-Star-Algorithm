@@ -5,23 +5,23 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed;
-    private Rigidbody rb;
-    private float horz;
-    private float vert;
+    private Rigidbody _rb;
+    private float _horz;
+    private float _vert;
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
 
     }
     private void Update()
     {
-        if (!rb)
+        if (!_rb)
             return;
-        horz = Input.GetAxis("Horizontal") * speed;
-        vert = Input.GetAxis("Vertical") * speed;
+        _horz = Input.GetAxis("Horizontal") * speed;
+        _vert = Input.GetAxis("Vertical") * speed;
     }
     private void FixedUpdate()
     {
-        rb.velocity = new Vector3(horz * Time.fixedDeltaTime, rb.velocity.y, vert * Time.fixedDeltaTime);
+        _rb.velocity = new Vector3(_horz * Time.fixedDeltaTime, _rb.velocity.y, _vert * Time.fixedDeltaTime);
     }
 }

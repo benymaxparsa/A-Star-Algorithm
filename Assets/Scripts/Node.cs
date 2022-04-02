@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Node : MonoBehaviour
 {
-    public float GCost;  // distance from start Node
-    public float HCost;  // distance from end Node
-    public float FCost;  // H + G cost
+    public float gCost;  // distance from start Node
+    public float hCost;  // distance from end Node
+    public float fCost;  // H + G cost
 
     public bool visited = false, option = false;
 
@@ -18,7 +19,7 @@ public class Node : MonoBehaviour
 
     public void Calc_GCost()
     {
-        GCost = parent.GCost + Vector2.Distance(pos, parent.pos);
+        gCost = parent.gCost + Vector2.Distance(pos, parent.pos);
        // float dx = Mathf.Abs(pos.x - parent.pos.x);
        // float dy = Mathf.Abs(pos.y - parent.pos.y);
        // GCost = parent.GCost + (dx + dy) + (1 - 2) * Mathf.Min(dx, dy);
@@ -26,7 +27,7 @@ public class Node : MonoBehaviour
 
     public void Calc_HCost(Vector2  final)                        //........................change to grid end...........................//
     {
-        HCost = Vector2.Distance(pos, final);
+        hCost = Vector2.Distance(pos, final);
         //float dx = Mathf.Abs(pos.x - final.x);
         //float dy = Mathf.Abs(pos.y - final.y);
        // HCost = (dx + dy) + (1 - 2) * Mathf.Min(dx, dy);
@@ -35,6 +36,6 @@ public class Node : MonoBehaviour
 
     public void Calc_FCost()
     {
-        FCost = GCost + HCost;
+        fCost = gCost + hCost;
     }
 }
