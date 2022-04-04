@@ -4,34 +4,36 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
     public int i,j;
+    public CellType cellType = CellType.Path;
     public Material wall;
     public Material visited;
     public Material start;
     public Material end;
+    public Material path;
     public Material none;
 
-    /// <param name="option">/// <summary>
-    /// this will be the tooltip
-    /// </summary>
-    /// <param name="args">args will be passed when starting this program</param></param>
-
-    public void SetMaterial(int  option)
+    public void SetCellType(CellType cellType)
     {
+        this.cellType=cellType;
         Material tmp = none;
-        switch (option)
+        switch (cellType)
         {
-            case 0:
+            case CellType.Start:
                 tmp = start;
                 break;
-            case 1:
+            case CellType.End:
                 tmp = end;
                 break;
-            case 2:
+            case CellType.Visited:
                 tmp = visited;
                 break;
-            case 3:
+            case CellType.Wall:
                 tmp = wall;
                 break;
+            case CellType.Path:
+                tmp = path;
+                break;
+
         }
         GetComponent<Renderer>().material = tmp;
     }

@@ -4,5 +4,6 @@
     Visited=1,
     Start=2,
     End=3,
-    None=4
+    Path=4,
+    None=5
 }

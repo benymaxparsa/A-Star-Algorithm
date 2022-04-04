@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Utils
@@ -21,13 +22,6 @@ namespace Utils
 
             Instance = this;
             //DontDestroyOnLoad(this.gameObject);
-        }
-
-
-        public virtual void ReturnToPool(T returnObject)
-        {
-            returnObject.gameObject.SetActive(false);
-            _objects.Enqueue(returnObject);
         }
 
         public virtual T Get()

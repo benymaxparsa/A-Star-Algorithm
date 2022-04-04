@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     {
         _horz = Input.GetAxis("Horizontal") * speed;
         _vert = Input.GetAxis("Vertical") * speed;
-        _zoom = Input.GetAxis("Mouse ScrollWheel")*zoomSpeed;
+        _zoom = -Input.GetAxis("Mouse ScrollWheel")*zoomSpeed;
         _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize+_zoom,10,200);
         transform.Translate(_horz,_vert,0);
     }
