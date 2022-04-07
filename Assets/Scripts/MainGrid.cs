@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,7 +36,7 @@ public class MainGrid : MonoBehaviour
         _grid = new Dictionary<(int, int), (Node, Cell)>();
         GenerateGrid();
         // Reset();
-        SetDestination(19, 19);
+        SetDestination(size - 1, size - 3);
         SetSource(0, 0);
     }
 
@@ -66,9 +65,13 @@ public class MainGrid : MonoBehaviour
             {
                 var cell = hit.collider.GetComponent<Cell>();
                 if (cell)
+                {
                     SetSource(cell.i, cell.j);
+                    CalcNeighbour(_source);
+                }
             }
         }
+
         if ((Input.GetKey(KeyCode.LeftShift) ||
              Input.GetKey(KeyCode.RightShift)) &&
             Input.GetMouseButtonDown(0))
@@ -79,7 +82,9 @@ public class MainGrid : MonoBehaviour
             {
                 var cell = hit.collider.GetComponent<Cell>();
                 if (cell)
+                {
                     SetDestination(cell.i, cell.j);
+                }
             }
         }
 
@@ -100,7 +105,7 @@ public class MainGrid : MonoBehaviour
             var cell = hit.collider.GetComponent<Cell>();
             if (!cell) return;
             if (cell.cellType == CellType.End || cell.cellType == CellType.Start) return;
-            _grid[(cell.i, cell.j)].Item1.IsWall = true;
+            _grid[(cell.i, cell.j)].Item1.IsWall = cellType == CellType.Wall;
             cell.SetCellType(cellType);
         }
     }
@@ -123,18 +128,19 @@ public class MainGrid : MonoBehaviour
         _found = false;
         foreach (var nodeCell in _grid)
         {
-            if(nodeCell.Value.Item2.cellType == CellType.Start ||
+            /*if(nodeCell.Value.Item2.cellType == CellType.Start ||
                nodeCell.Value.Item2.cellType == CellType.End )
-             continue;
-                
+             continue;*/
+
             var index = nodeCell.Key;
             var pos = nodeCell.Value.Item1.Pos;
             nodeCell.Value.Item1.Reset();
             if (nodeCell.Value.Item2.cellType != CellType.Wall)
                 nodeCell.Value.Item2.SetCellType(CellType.Path);
         }
-        SetDestination(_destination.Pos.x,_destination.Pos.y);
-        SetSource(_source.Pos.x,_source.Pos.y);
+
+        SetDestination(_destination.Pos.x, _destination.Pos.y);
+        SetSource(_source.Pos.x, _source.Pos.y);
         CalcNeighbour(_source);
     }
 
@@ -163,6 +169,7 @@ public class MainGrid : MonoBehaviour
             _grid[(_destination.Pos.x, _destination.Pos.y)].Item2.SetCellType(CellType.Path);
         _destination = _grid[(i, j)].Item1;
         _destination.HCost = 0;
+        _destination.IsWall = false;
         _grid[(i, j)].Item1.Set(_destination);
         _grid[(i, j)].Item2.SetCellType(CellType.End);
     }
@@ -172,6 +179,21 @@ public class MainGrid : MonoBehaviour
         Reset();
         _startProcess = true;
         toggleButton.interactable = false;
+    }
+
+    public void ClearWalls()
+    {
+        foreach (var item in _grid)
+        {
+            if (item.Value.Item1.IsWall)
+            {
+                item.Value.Item1.IsWall = false;
+            }
+
+            if (item.Value.Item2.cellType == CellType.End || item.Value.Item2.cellType == CellType.Start)
+                continue;
+            item.Value.Item2.SetCellType(CellType.Path);
+        }
     }
 
     private Vector2Int WorldPos_To_GridIndex(Vector3 pos)
@@ -186,7 +208,7 @@ public class MainGrid : MonoBehaviour
 
     private Node GetMinCost()
     {
-        if (_options == null)
+        if (_options.Count == 0)
             return null;
         Node temp = _options[0];
 
@@ -196,7 +218,7 @@ public class MainGrid : MonoBehaviour
             {
                 temp = item;
             }
-            else if (Math.Abs(temp.FCost - item.FCost) < 0.001f && temp.HCost > item.HCost)
+            else if (Math.Abs(temp.FCost - item.FCost) < 0.01f && temp.HCost > item.HCost)
             {
                 temp = item;
             }
@@ -209,6 +231,7 @@ public class MainGrid : MonoBehaviour
 
     private void FindPath()
     {
+        Debug.Log($"size: {_options.Count}");
         if (!_found)
         {
             _current = GetMinCost();
@@ -226,7 +249,7 @@ public class MainGrid : MonoBehaviour
                 cell.SetCellType(CellType.Visited);
             }
 
-            Debug.Log(_current.Pos.ToString() + "  " + _destination.Pos.ToString());
+            //Debug.Log(_current.Pos.ToString() + "  " + _destination.Pos.ToString());
             if (_current.Pos == _destination.Pos)
             {
                 //FillCell(_current, 2);
@@ -258,7 +281,7 @@ public class MainGrid : MonoBehaviour
 
             /*for (int i = 0; i < _options.Count; i++)
             {
-                //Debug.Log(options[i].pos.ToString() + " F = " + options[i].FCost.ToString()+ " H = "+ options[i].HCost.ToString()) ;
+                Debug.Log(_options[i].Pos.ToString() + " F = " + _options[i].FCost.ToString()+ " H = "+ _options[i].HCost.ToString()) ;
             }*/
         }
         else
@@ -297,8 +320,8 @@ public class MainGrid : MonoBehaviour
             -1, -1, 0, -1, 1, -1
         };
         int Px, Py, x, y;
-        Px = (int) curr.Pos.x;
-        Py = (int) curr.Pos.y;
+        Px = curr.Pos.x;
+        Py = curr.Pos.y;
 
         for (int i = 0; i < 16; i += 2)
         {
@@ -309,7 +332,8 @@ public class MainGrid : MonoBehaviour
             if (x >= 0 && x < size && y >= 0 && y < size)
             {
                 var neig = _grid[(x, y)].Item1;
-
+                if (neig.Pos.x == _destination.Pos.x && neig.Pos.y == _destination.Pos.y)
+                    Debug.Log("Bruh");
                 if (!neig.IsWall && !neig.Visited)
                 {
                     if (!neig.Option)
