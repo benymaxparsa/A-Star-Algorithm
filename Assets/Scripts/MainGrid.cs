@@ -10,7 +10,7 @@ public class MainGrid : MonoBehaviour
     [SerializeField] private int size;
     [SerializeField] private Text toggleButtonText;
     [SerializeField] private Button toggleButton;
-
+    [SerializeField] private InputField gridSize;
     private bool _startProcess = false;
     private Camera _camera;
     private float _xOffset;
@@ -33,9 +33,7 @@ public class MainGrid : MonoBehaviour
     private void Start()
     {
         _camera = Camera.main;
-        _grid = new Dictionary<(int, int), (Node, Cell)>();
         GenerateGrid();
-        // Reset();
         SetDestination(size - 1, size - 3);
         SetSource(0, 0);
     }
@@ -364,8 +362,19 @@ public class MainGrid : MonoBehaviour
         }
     }
 
-    private void GenerateGrid()
+    public void GenerateGrid()
     {
+        var cells = GameObject.FindObjectsOfType<Cell>();
+        foreach (var c in cells)
+        {
+            GameObject.Destroy(c.gameObject);
+        }
+        _grid = new Dictionary<(int, int), (Node, Cell)>();
+        // Reset();
+
+        var flag = int.TryParse(gridSize.text, out size);
+        if (!flag) size = 4;
+
         var s = size / 2;
         _xOffset = s;
         _yOffset = s;
